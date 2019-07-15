@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.widget.EditText
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import be.mickverm.widget.textfield.validators.InputValidator
 
 
@@ -70,39 +71,63 @@ class ValidatingEditText : EditText {
     }
 
     private fun validate() {
-        validators.forEach { validator ->
-            val input = getInput()
-            val error = validator.validate(input)
-            valid = error == null
+        val input = getInput()
 
-            listener?.onValidityChanged(this, input, valid)
-
-            if (error == null) setError(null)
-            else {
-                setError(context.getString(error))
-                return
+        if (validators.isEmpty()) {
+            clearErrorMessage()
+            valid = true
+        } else {
+            validators.forEach { validator ->
+                val errorRes = validator.validate(input)
+                valid = !setErrorMessage(errorRes)
+                if (!valid) return
             }
+        }
+
+        listener?.onValidityChanged(this, input, valid)
+    }
+
+    private fun setErrorMessage(@StringRes errorRes: Int?): Boolean {
+        return if (errorRes == null) {
+            clearErrorMessage()
+            false
+        } else {
+            setErrorMessage(context.getString(errorRes))
+            true
         }
     }
 
-    fun addValidator(validator: InputValidator) {
+    private fun setErrorMessage(errorMessage: String) {
+        error = errorMessage
+    }
+
+    private fun clearErrorMessage() {
+        error = null
+    }
+
+    fun addValidator(validator: InputValidator, revalidate: Boolean = false) {
         validators.add(validator)
+        if (revalidate) validate()
     }
 
-    fun addValidators(vararg validators: InputValidator) {
+    fun addValidators(vararg validators: InputValidator, revalidate: Boolean = false) {
         this.validators.addAll(validators)
+        if (revalidate) validate()
     }
 
-    fun removeValidator(validator: InputValidator) {
+    fun removeValidator(validator: InputValidator, revalidate: Boolean = false) {
         validators.remove(validator)
+        if (revalidate) validate()
     }
 
-    fun removeValidators(vararg validators: InputValidator) {
+    fun removeValidators(vararg validators: InputValidator, revalidate: Boolean = false) {
         this.validators.removeAll(validators)
+        if (revalidate) validate()
     }
 
-    fun clearValidators() {
+    fun clearValidators(revalidate: Boolean = false) {
         validators.clear()
+        if (revalidate) validate()
     }
 
     fun isValid(): Boolean = valid

@@ -6,4 +6,4 @@ private const val MAC_REGEX = "((\\d|([a-f]|[A-F])){2}:){5}(\\d|([a-f]|[A-F])){2
 
 class MacAddressInputValidator(
     @StringRes private val errorRes: Int
-) : RegexInputValidator(MAC_REGEX, errorRes)
+) : RegexInputValidator(errorRes, MAC_REGEX)

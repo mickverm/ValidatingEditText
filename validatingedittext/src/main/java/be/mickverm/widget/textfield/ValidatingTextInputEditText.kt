@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.annotation.StringRes
 import be.mickverm.widget.textfield.validators.InputValidator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -59,48 +60,67 @@ class ValidatingTextInputEditText : TextInputEditText {
     }
 
     private fun validate() {
-        validators.forEach { validator ->
-            val input = getInput()
-            val error = validator.validate(input)
-            valid = error == null
+        val input = getInput()
 
-            listener?.onValidityChanged(this, input, valid)
-
-            val parent = (parent as FrameLayout).parent as? TextInputLayout
-            if (parent != null) {
-                if (error == null) parent.error = null
-                else {
-                    parent.error = context.getString(error)
-                    return
-                }
-            } else {
-                if (error == null) setError(null)
-                else {
-                    setError(context.getString(error))
-                    return
-                }
+        if (validators.isEmpty()) {
+            clearErrorMessage()
+            valid = true
+        } else {
+            validators.forEach { validator ->
+                val errorRes = validator.validate(input)
+                valid = !setErrorMessage(errorRes)
+                if (!valid) return
             }
+        }
+
+        listener?.onValidityChanged(this, input, valid)
+    }
+
+    private fun setErrorMessage(@StringRes errorRes: Int?): Boolean {
+        return if (errorRes == null) {
+            clearErrorMessage()
+            false
+        } else {
+            setErrorMessage(context.getString(errorRes))
+            true
         }
     }
 
-    fun addValidator(validator: InputValidator) {
+    private fun setErrorMessage(errorMessage: String) {
+        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        if (parent != null) parent.error = errorMessage
+        else error = errorMessage
+    }
+
+    private fun clearErrorMessage() {
+        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        if (parent != null) parent.error = null
+        else error = null
+    }
+
+    fun addValidator(validator: InputValidator, revalidate: Boolean = false) {
         validators.add(validator)
+        if (revalidate) validate()
     }
 
-    fun addValidators(vararg validators: InputValidator) {
+    fun addValidators(vararg validators: InputValidator, revalidate: Boolean = false) {
         this.validators.addAll(validators)
+        if (revalidate) validate()
     }
 
-    fun removeValidator(validator: InputValidator) {
+    fun removeValidator(validator: InputValidator, revalidate: Boolean = false) {
         validators.remove(validator)
+        if (revalidate) validate()
     }
 
-    fun removeValidators(vararg validators: InputValidator) {
+    fun removeValidators(vararg validators: InputValidator, revalidate: Boolean = false) {
         this.validators.removeAll(validators)
+        if (revalidate) validate()
     }
 
-    fun clearValidators() {
+    fun clearValidators(revalidate: Boolean = false) {
         validators.clear()
+        if (revalidate) validate()
     }
 
     fun isValid(): Boolean = valid
