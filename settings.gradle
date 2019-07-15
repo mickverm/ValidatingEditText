@@ -1,1 +1,1 @@
-include ':app', ':inputvalidation'
+include ':app', ':validatingedittext'
