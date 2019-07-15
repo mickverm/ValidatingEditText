@@ -107,7 +107,17 @@ class ValidatingTextInputEditText : TextInputEditText {
 
     fun getInput(): String = text.toString()
 
+    @Deprecated(
+        message = "Method is going to be replaced by setValidityChangedListener",
+        replaceWith = ReplaceWith(
+            "setValidityChangedListener(listener)"
+        )
+    )
     fun setValidityChanged(listener: ValidityChangedListener?) {
+        this.listener = listener
+    }
+
+    fun setValidityChangedListener(listener: ValidityChangedListener?) {
         this.listener = listener
     }
 }
