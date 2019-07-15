@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'ValidatingEditText'
+
+    publishedGroupId = 'be.mickverm.widget'
+    libraryName = 'ValidatingEditText'
+    artifact = 'validatingedittext'
+
+    libraryDescription = ''
+
+    siteUrl = 'https://github.com/mickverm/validatingedittext'
+    gitUrl = 'https://github.com/mickverm/validatingedittext.git'
+
+    libraryVersion = '0.1.0'
+
+    developerId = 'Mickverm'
+    developerName = 'Michiel Vermeersch'
+    developerEmail = 'mick.vermeersch@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
