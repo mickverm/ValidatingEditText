@@ -1,4 +1,4 @@
-package be.mickverm.widget.textfield
+package be.mickverm.widget.validatingedittext
 
 import android.widget.EditText
 

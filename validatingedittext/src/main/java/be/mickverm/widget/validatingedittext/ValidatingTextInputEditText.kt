@@ -1,17 +1,17 @@
-package be.mickverm.widget.textfield
+package be.mickverm.widget.validatingedittext
 
 import android.content.Context
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.widget.EditText
-import androidx.annotation.RequiresApi
+import android.widget.FrameLayout
 import androidx.annotation.StringRes
-import be.mickverm.widget.textfield.validators.InputValidator
+import be.mickverm.widget.validatingedittext.validators.InputValidator
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
-
-class ValidatingEditText : EditText {
+class ValidatingTextInputEditText : TextInputEditText {
 
     private var valid = false
     private val validators = mutableListOf<InputValidator>()
@@ -35,16 +35,6 @@ class ValidatingEditText : EditText {
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        init()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
         init()
     }
 
@@ -98,11 +88,15 @@ class ValidatingEditText : EditText {
     }
 
     private fun setErrorMessage(errorMessage: String) {
-        error = errorMessage
+        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        if (parent != null) parent.error = errorMessage
+        else error = errorMessage
     }
 
     private fun clearErrorMessage() {
-        error = null
+        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        if (parent != null) parent.error = null
+        else error = null
     }
 
     fun addValidator(validator: InputValidator, revalidate: Boolean = false) {

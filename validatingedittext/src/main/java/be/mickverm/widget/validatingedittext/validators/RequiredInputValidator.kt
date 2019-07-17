@@ -1,4 +1,4 @@
-package be.mickverm.widget.textfield.validators
+package be.mickverm.widget.validatingedittext.validators
 
 import androidx.annotation.StringRes
 

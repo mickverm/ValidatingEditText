@@ -1,42 +1,42 @@
-package be.mickverm.widget.textfield.validators
+package be.mickverm.widget.validatingedittext.validators
 
 import androidx.annotation.StringRes
-import java.util.regex.Pattern
 
-open class PatternInputValidator(
+open class RegexInputValidator(
     @StringRes private val errorRes: Int,
-    private val pattern: Pattern
+    private val regex: Regex
 ) : InputValidator {
 
     constructor(
         @StringRes errorRes: Int,
-        pattern: String
-    ) : this(errorRes, Pattern.compile(pattern))
+        regex: String
+    ) : this(errorRes, regex.toRegex())
 
     @Deprecated(
         message = "Constructor parameter order changed.",
         replaceWith = ReplaceWith(
-            "PatternInputValidator(errorRes, pattern)"
+            "RegexInputValidator(errorRes, regex)"
         )
     )
     constructor(
-        pattern: String,
+        regex: String,
         @StringRes errorRes: Int
-    ) : this(errorRes, Pattern.compile(pattern))
+    ) : this(errorRes, regex.toRegex())
 
     @Deprecated(
         message = "Constructor parameter order changed.",
         replaceWith = ReplaceWith(
-            "PatternInputValidator(errorRes, pattern)"
+            "RegexInputValidator(errorRes, regex)"
         )
     )
     constructor(
-        pattern: Pattern,
+        pattern: Regex,
         @StringRes errorRes: Int
     ) : this(errorRes, pattern)
 
     final override fun validate(input: String?) = when {
-        pattern.matcher(input).matches() -> null
+        input == null -> errorRes
+        input.matches(regex) -> null
         else -> errorRes
     }
 }

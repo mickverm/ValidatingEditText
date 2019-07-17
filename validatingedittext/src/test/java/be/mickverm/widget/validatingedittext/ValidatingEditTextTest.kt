@@ -1,7 +1,7 @@
-package be.mickverm.widget.textfield
+package be.mickverm.widget.validatingedittext
 
 import androidx.appcompat.app.AppCompatActivity
-import be.mickverm.widget.textfield.validators.InputValidator
+import be.mickverm.widget.validatingedittext.validators.InputValidator
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
