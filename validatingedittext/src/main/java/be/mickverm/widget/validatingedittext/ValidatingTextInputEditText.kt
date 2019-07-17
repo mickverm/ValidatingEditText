@@ -62,18 +62,20 @@ class ValidatingTextInputEditText : TextInputEditText {
 
     private fun validate() {
         val input = getInput()
+        var valid = true
 
-        if (validators.isEmpty()) {
-            clearErrorMessage()
-            valid = true
-        } else {
-            validators.forEach { validator ->
-                val errorRes = validator.validate(input)
-                valid = !setErrorMessage(errorRes)
-                if (!valid) return
+        if (validators.isEmpty()) clearErrorMessage()
+        else {
+            run loop@{
+                validators.forEach { validator ->
+                    if (!valid) return@loop
+                    val errorRes = validator.validate(input)
+                    valid = !setErrorMessage(errorRes)
+                }
             }
         }
 
+        this.valid = valid
         listener?.onValidityChanged(this, input, valid)
     }
 
