@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class ValidatingTextInputEditText : TextInputEditText {
 
-    private var valid = false
+    private var valid = true
     private val validators = mutableListOf<InputValidator>()
     private var listener: ValidityChangeListener? = null
 

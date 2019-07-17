@@ -13,7 +13,7 @@ import be.mickverm.widget.validatingedittext.validators.InputValidator
 
 class ValidatingEditText : EditText {
 
-    private var valid = false
+    private var valid = true
     private val validators = mutableListOf<InputValidator>()
     private var listener: ValidityChangeListener? = null
 
