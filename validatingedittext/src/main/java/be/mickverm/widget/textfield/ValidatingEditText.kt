@@ -15,7 +15,7 @@ class ValidatingEditText : EditText {
 
     private var valid = false
     private val validators = mutableListOf<InputValidator>()
-    private var listener: ValidityChangedListener? = null
+    private var listener: ValidityChangeListener? = null
 
     constructor(
         context: Context
@@ -134,17 +134,15 @@ class ValidatingEditText : EditText {
 
     fun getInput(): String = text.toString()
 
-    @Deprecated(
-        message = "Method is going to be replaced by setValidityChangedListener",
-        replaceWith = ReplaceWith(
-            "setValidityChangedListener(listener)"
-        )
-    )
-    fun setValidityChanged(listener: ValidityChangedListener?) {
+    fun setValidityChangeListener(listener: ValidityChangeListener?) {
         this.listener = listener
     }
 
-    fun setValidityChangedListener(listener: ValidityChangedListener?) {
-        this.listener = listener
+    fun setValidityChangeListener(listener: (EditText, String, Boolean) -> Unit) {
+        this.listener = object : ValidityChangeListener {
+            override fun onValidityChanged(editText: EditText, input: String, valid: Boolean) {
+                listener.invoke(editText, input, valid)
+            }
+        }
     }
 }
