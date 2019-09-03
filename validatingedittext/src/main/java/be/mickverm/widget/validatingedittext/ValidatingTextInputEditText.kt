@@ -102,11 +102,13 @@ class ValidatingTextInputEditText : TextInputEditText {
     }
 
     fun addValidator(validator: InputValidator, revalidate: Boolean = false) {
+        if (validators.isEmpty()) valid = false
         validators.add(validator)
         if (revalidate) validate()
     }
 
     fun addValidators(vararg validators: InputValidator, revalidate: Boolean = false) {
+        if (validators.isEmpty()) valid = false
         this.validators.addAll(validators)
         if (revalidate) validate()
     }
