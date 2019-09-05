@@ -60,7 +60,6 @@ class ValidatingEditText : AppCompatEditText {
     }
 
     private fun validate() {
-        val input = getInput()
         var valid = true
 
         if (validators.isEmpty()) clearErrorMessage()
@@ -123,7 +122,12 @@ class ValidatingEditText : AppCompatEditText {
 
     fun isValid(): Boolean = valid
 
-    fun getInput(): String = text.toString()
+    var input: String
+        get() = text.toString()
+        set(value) {
+            setText(value)
+            validate()
+        }
 
     fun setValidityChangeListener(listener: ValidityChangeListener?) {
         this.listener = listener
