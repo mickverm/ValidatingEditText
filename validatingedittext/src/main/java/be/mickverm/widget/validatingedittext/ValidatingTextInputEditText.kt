@@ -96,8 +96,10 @@ class ValidatingTextInputEditText : TextInputEditText {
 
     private fun clearErrorMessage() {
         val parent = (parent as? FrameLayout)?.parent as? TextInputLayout
-        if (parent != null) parent.error = null
-        else error = null
+        if (parent != null) {
+            parent.error = null
+            parent.isErrorEnabled = false
+        } else error = null
     }
 
     fun addValidator(validator: InputValidator, revalidate: Boolean = false) {
