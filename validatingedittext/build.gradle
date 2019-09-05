@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/mickverm/validatingedittext'
     gitUrl = 'https://github.com/mickverm/validatingedittext.git'
 
-    libraryVersion = '0.4.3'
+    libraryVersion = '0.4.4'
 
     developerId = 'Mickverm'
     developerName = 'Michiel Vermeersch'

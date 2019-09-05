@@ -90,13 +90,13 @@ class ValidatingTextInputEditText : TextInputEditText {
     }
 
     private fun setErrorMessage(errorMessage: String) {
-        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        val parent = (parent as? FrameLayout)?.parent as? TextInputLayout
         if (parent != null) parent.error = errorMessage
         else error = errorMessage
     }
 
     private fun clearErrorMessage() {
-        val parent = (parent as FrameLayout).parent as? TextInputLayout
+        val parent = (parent as? FrameLayout)?.parent as? TextInputLayout
         if (parent != null) parent.error = null
         else error = null
     }

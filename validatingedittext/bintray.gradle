@@ -26,12 +26,9 @@ artifacts {
     archives sourcesJar
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+    user = getProperty('bintray_user', '')
+    key = getProperty('bintray_apikey', '')
 
     configurations = ['archives']
     pkg {
@@ -49,4 +46,8 @@ bintray {
             desc = libraryDescription
         }
     }
+}
+
+String getProperty(String name, String defaultValue) {
+    hasProperty(name) ? getProperty(name) : defaultValue
 }

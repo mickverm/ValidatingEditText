@@ -1,17 +1,16 @@
 package be.mickverm.widget.validatingedittext
 
 import android.content.Context
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.widget.EditText
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatEditText
 import be.mickverm.widget.validatingedittext.validators.InputValidator
 
 
-class ValidatingEditText : EditText {
+class ValidatingEditText : AppCompatEditText {
 
     private var valid = true
     private val validators = mutableListOf<InputValidator>()
@@ -35,16 +34,6 @@ class ValidatingEditText : EditText {
         attrs: AttributeSet?,
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr) {
-        init()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
         init()
     }
 
