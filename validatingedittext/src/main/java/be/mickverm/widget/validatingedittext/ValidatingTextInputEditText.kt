@@ -131,8 +131,8 @@ class ValidatingTextInputEditText : TextInputEditText {
 
     fun isValid(): Boolean = valid
 
-    var input: String
-        get() = text.toString()
+    var input: String?
+        get() = text?.toString()
         set(value) {
             setText(value)
             validate()
@@ -142,9 +142,9 @@ class ValidatingTextInputEditText : TextInputEditText {
         this.listener = listener
     }
 
-    fun setValidityChangeListener(listener: (EditText, String, Boolean) -> Unit) {
+    fun setValidityChangeListener(listener: (editText: EditText, input: String?, valid: Boolean) -> Unit) {
         this.listener = object : ValidityChangeListener {
-            override fun onValidityChanged(editText: EditText, input: String, valid: Boolean) {
+            override fun onValidityChanged(editText: EditText, input: String?, valid: Boolean) {
                 listener.invoke(editText, input, valid)
             }
         }
